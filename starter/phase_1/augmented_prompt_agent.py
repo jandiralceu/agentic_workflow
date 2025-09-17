@@ -1,13 +1,17 @@
-# TODO: 1 - Import the AugmentedPromptAgent class
+"""
+Augmented Prompt Agent implementation
+
+These scripts will help verify that the AugmentedPromptAgent works correctly 
+and give you a deeper understanding of its behavior and capabilities.
+"""
 import os
 from dotenv import load_dotenv
 
 from workflow_agents.base_agents import AugmentedPromptAgent
 
-# Load environment variables from .env file
+
 load_dotenv()
 
-# Retrieve OpenAI API key from environment variables
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 if not openai_api_key:
@@ -15,17 +19,10 @@ if not openai_api_key:
 
 prompt = "What is the capital of France?"
 persona = "You are a college professor; your answers always start with: 'Dear students,'"
-
-# TODO: 2 - Instantiate an object of AugmentedPromptAgent with the required parameters
 augmented_agent = AugmentedPromptAgent(openai_api_key, persona)
-
-# TODO: 3 - Send the 'prompt' to the agent and store the response in a variable named 'augmented_agent_response'
 augmented_agent_response = augmented_agent.respond(prompt)
-# Print the agent's response
+
 print(augmented_agent_response)
 
-# TODO: 4 - Add a comment explaining:
-# - What knowledge the agent likely used to answer the prompt.
-# - How the system prompt specifying the persona affected the agent's response.
-print("The agent likely used to answer the prompt is general knowledge from the selected LLM model.")
-print("The system prompt specifying the persona affected the agent's response by making the agent more specific and relevant to the prompt.")
+print("This response was generated using the AugmentedPromptAgent with a college professor persona, utilizing the LLM's general knowledge within that academic context.")
+print("The professor persona transformed the response by requiring it to begin with 'Dear students,' and frame the answer from an educational standpoint, making it sound like a classroom explanation rather than a casual response.")
