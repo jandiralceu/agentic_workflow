@@ -6,6 +6,7 @@ and give you a deeper understanding of their behavior and capabilities.
 """
 import os
 from dotenv import load_dotenv
+from rich.console import Console
 
 from workflow_agents.base_agents import RoutingAgent, KnowledgeAugmentedPromptAgent
 
@@ -16,6 +17,8 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY is not set")
+
+console = Console()
 
 persona = "You are a college professor"
 
@@ -49,6 +52,11 @@ agents = [
 ]
 routing_agent.agents = agents
 
-print(routing_agent.route_to_agent("Tell me about the history of Rome, Texas"))
-print(routing_agent.route_to_agent("Tell me about the history of Rome, Italy"))
-print(routing_agent.route_to_agent("One story takes 2 days, and there are 20 stories"))
+console.print("\n[bold]Question[/bold]: Tell me about the history of Rome, Texas", style="red")
+console.print(f"{routing_agent.route_to_agent("Tell me about the history of Rome, Texas")}", style="cyan")
+
+console.print("\n[bold]Question[/bold]: Tell me about the history of Rome, Italy", style="red")
+console.print(f"{routing_agent.route_to_agent("Tell me about the history of Rome, Italy")}", style="cyan")
+
+console.print("\n[bold]Question[/bold]: One story takes 2 days, and there are 20 stories", style="red")
+console.print(f"{routing_agent.route_to_agent("One story takes 2 days, and there are 20 stories")}\n", style="cyan")

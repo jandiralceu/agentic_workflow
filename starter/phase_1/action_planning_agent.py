@@ -6,6 +6,8 @@ and give you a deeper understanding of its behavior and capabilities.
 """
 import os
 from dotenv import load_dotenv
+from rich.console import Console
+from rich.table import Table
 
 from workflow_agents.base_agents import ActionPlanningAgent
 
@@ -16,6 +18,7 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY is not set")
 
+console = Console()
 
 knowledge = """
 # Fried Egg
@@ -49,4 +52,15 @@ action_planning_agent = ActionPlanningAgent(openai_api_key, knowledge)
 prompt = "One morning I wanted to have scrambled eggs"
 steps = action_planning_agent.extract_steps_from_prompt(prompt)
 
-print(steps)
+table = Table(title="Recipe")
+table.add_column("#")
+table.add_column("Step", style="cyan")
+
+for _, step in enumerate(steps, 1):
+    (position, step) = step.split(". ")
+    table.add_row(f"[bold]{position}.[/bold]", step)
+
+console.print("\n")
+console.print(f"[bold]{prompt}[/bold]\n")
+console.print(table)
+console.print("\n")

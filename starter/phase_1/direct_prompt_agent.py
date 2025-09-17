@@ -6,6 +6,7 @@ and give you a deeper understanding of its behavior and capabilities.
 """
 import os
 from dotenv import load_dotenv
+from rich.console import Console
 
 from workflow_agents.base_agents import DirectPromptAgent
 
@@ -17,12 +18,15 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY is not set")
 
+console = Console()
+
 prompt = "What is the Capital of France?"
 direct_agent = DirectPromptAgent(openai_api_key)
 direct_agent_response = direct_agent.respond(prompt)
 
-print(direct_agent_response)
+console.print(f"\n[bold]Question[/bold]: {prompt}", style="red")
+console.print(f"[bold]Answer[/bold]: {direct_agent_response}", style="cyan")
 
-print("""\nThis response was generated using the DirectPromptAgent, which relies solely on the 
-LLM's pre-trained knowledge without any additional context or retrieved information."""
+console.print("""\nThis response was generated using the [bold]DirectPromptAgent[/bold], which relies solely on the 
+LLM's pre-trained knowledge without any additional context or retrieved information.\n"""
 )

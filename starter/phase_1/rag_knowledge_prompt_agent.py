@@ -6,6 +6,7 @@ and give you a deeper understanding of its behavior and capabilities.
 """
 import os
 from dotenv import load_dotenv
+from rich.console import Console
 
 from workflow_agents.base_agents import RAGKnowledgePromptAgent
 
@@ -15,6 +16,8 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY is not set")
+
+console = Console()
 
 persona = "You are a college professor, your answer always starts with: Dear students,"
 RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(openai_api_key, persona)
@@ -53,5 +56,6 @@ embbedings = RAG_knowledge_prompt_agent.calculate_embeddings()
 prompt = "What is the podcast that Clara hosts about?"
 response = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(prompt)
 
-print(f"Prompt: {prompt}")
-print(f"Response: {response}")
+console.print(f"\n[bold]Question[/bold]: {prompt}", style="red")
+console.print(f"\n{response}\n", style="cyan")
+

@@ -31,7 +31,6 @@ Example Usage:
     >>> persona_agent = AugmentedPromptAgent(api_key, "You are a helpful assistant")
     >>> response = persona_agent.respond("Explain machine learning")
 """
-from math import e
 import numpy as np
 import pandas as pd
 import re
@@ -710,7 +709,7 @@ class EvaluationAgent:
                     messages=[
                         {
                             "role": "system", 
-                            "content": f"""
+                            "content": """
                             You are an expert instructor. Generate clear, actionable instructions to help fix an incorrect 
                             answer based on evaluation feedback. All information are provided below:
                             """
