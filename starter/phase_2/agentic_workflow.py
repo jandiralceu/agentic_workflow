@@ -15,10 +15,14 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY is not set")
 
-with open("Product-Spec-Email-Router.txt", "r") as file:
-    product_spec = file.read()
-
 console = Console()
+
+try:
+    with open("Product-Spec-Email-Router.txt", "r") as file:
+        product_spec = file.read()
+except Exception as e:
+    console.print(f"Error: Cannot read Product-Spec-Email-Router.txt - {e}", style="bold red")
+    exit(1)
 
 knowledge_action_planning = (
     "Stories are defined from a product spec by identifying a "
@@ -154,15 +158,26 @@ for prompt in workflow_prompts:
     console.print(f"Task to complete in this workflow, workflow prompt = {prompt}", style="italic red")
     console.print("Defining workflow steps from the workflow prompt", style="bold red")
 
-    workflow_steps = action_planning_agent.extract_steps_from_prompt(prompt)
-    completed_steps = []
+    try:
+        workflow_steps = action_planning_agent.extract_steps_from_prompt(prompt)
+        completed_steps = []
 
-    for step in workflow_steps:
-        result = routing_agent.route(step)
-        completed_steps.append(result)
+        for step in workflow_steps:
+            try:
+                result = routing_agent.route(step)
+                completed_steps.append(result)
+                console.print(f"\nStep: {step}", style="bold red")
+                console.print(f"Result: {result}", style="italic green")
+            except Exception as e:
+                error_msg = f"Step failed: {step} - Error: {str(e)}"
+                completed_steps.append(error_msg)
+                console.print(f"\nStep: {step}", style="bold red")
+                console.print(f"Result: {error_msg}", style="italic red")
 
-        console.print(f"\nStep: {step}", style="bold red")
-        console.print(f"Result: {result}", style="italic green")
+        if completed_steps:
+            console.print(f"\n\nFinal output of the workflow: {completed_steps[-1]}", style="bold blue")
+        else:
+            console.print(f"\n\nNo results generated for this workflow", style="bold red")
 
-    console.print(f"\n\nFinal output of the workflow: {completed_steps[-1]}", style="bold blue")
-
+    except Exception as e:
+        console.print(f"\nWorkflow failed: {str(e)}", style="bold red")
