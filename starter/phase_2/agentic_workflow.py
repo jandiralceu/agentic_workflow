@@ -52,14 +52,28 @@ product_manager_knowledge_agent = KnowledgeAugmentedPromptAgent(
     openai_api_key, persona_product_manager, knowledge_product_manager
 )
 
-product_manager_evaluate_persona = "You are an evaluation agent that checks the answers of other worker agents."
-evaluation_criteria_for_product_manager = "The answer should be stories that follow the following structure: As a [type of user], I want [an action or feature] so that [benefit/value]."
+product_manager_evaluate_persona = "You are an expert Product Manager evaluation agent with deep knowledge of user story best practices."
+evaluation_criteria_for_product_manager = """
+ENHANCED USER STORY EVALUATION CRITERIA (Score each 0-10):
+
+1. STRUCTURE (40%): Must follow "As a [user], I want [feature] so that [benefit]" format
+2. SPECIFICITY (35%): Feature and user type must be concrete and implementable
+3. VALUE (25%): Benefit must be clear and explain WHY the feature matters
+
+SCORING:
+- 9-10: Excellent quality
+- 7-8: Good quality (passes threshold)
+- 5-6: Needs improvement
+- 0-4: Poor quality
+
+Pass threshold: 7.0/10 (70%). Provide overall score and brief feedback for each dimension.
+"""
 product_manager_evaluation_agent = EvaluationAgent(
     openai_api_key,
     product_manager_evaluate_persona,
     evaluation_criteria_for_product_manager,
     product_manager_knowledge_agent,
-    3  # Reduced iterations for demo
+    5
 )
 
 # Program Manager - Knowledge Augmented Prompt Agent
@@ -81,7 +95,7 @@ program_manager_evaluation_agent = EvaluationAgent(
     persona_program_manager_eval,
     evaluation_criteria_program_manager,
     program_manager_knowledge_agent,
-    3  # Reduced iterations for demo
+    5
 )
 
 persona_dev_engineer = "You are a Development Engineer, you are responsible for defining the development tasks for a product."
@@ -104,7 +118,7 @@ development_engineer_evaluation_agent = EvaluationAgent(
     persona_dev_engineer_eval,
     evaluation_criteria_dev_engineer,
     development_engineer_knowledge_agent,
-    3  # Reduced iterations for demo
+    5
 )
 
 routing_agent = RoutingAgent(openai_api_key, {})
