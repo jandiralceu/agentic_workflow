@@ -55,7 +55,7 @@ product_manager_evaluation_agent = EvaluationAgent(
     product_manager_evaluate_persona,
     evaluation_criteria_for_product_manager,
     product_manager_knowledge_agent,
-    6
+    3  # Reduced iterations for demo
 )
 
 # Program Manager - Knowledge Augmented Prompt Agent
@@ -77,7 +77,7 @@ program_manager_evaluation_agent = EvaluationAgent(
     persona_program_manager_eval,
     evaluation_criteria_program_manager,
     program_manager_knowledge_agent,
-    6
+    3  # Reduced iterations for demo
 )
 
 persona_dev_engineer = "You are a Development Engineer, you are responsible for defining the development tasks for a product."
@@ -100,7 +100,7 @@ development_engineer_evaluation_agent = EvaluationAgent(
     persona_dev_engineer_eval,
     evaluation_criteria_dev_engineer,
     development_engineer_knowledge_agent,
-    6
+    3  # Reduced iterations for demo
 )
 
 routing_agent = RoutingAgent(openai_api_key, {})
@@ -140,25 +140,29 @@ agents = [
 
 routing_agent.agents = agents
 
-
-
 console.print("\n*** Workflow execution started ***\n", style="bold red")
 
-workflow_prompt = "What would the development tasks for this product be?"
+workflow_prompts = [
+    "What would the development tasks for this product be?",
+    "Define only the key features for the Email Router product",
+    "Generate a risk assessment plan for the Email Router based on its specification",
+    "Create comprehensive user stories for the Email Router system"
+]
 
-console.print(f"Task to complete in this workflow, workflow prompt = {workflow_prompt}", style="italic red")
 
-console.print("Defining workflow steps from the workflow prompt", style="bold red")
+for prompt in workflow_prompts:
+    console.print(f"Task to complete in this workflow, workflow prompt = {prompt}", style="italic red")
+    console.print("Defining workflow steps from the workflow prompt", style="bold red")
 
-workflow_steps = action_planning_agent.extract_steps_from_prompt(workflow_prompt)
+    workflow_steps = action_planning_agent.extract_steps_from_prompt(prompt)
+    completed_steps = []
 
-completed_steps = []
+    for step in workflow_steps:
+        result = routing_agent.route(step)
+        completed_steps.append(result)
 
-for step in workflow_steps:
-    result = routing_agent.route(step)
-    completed_steps.append(result)
+        console.print(f"\nStep: {step}", style="bold red")
+        console.print(f"Result: {result}", style="italic green")
 
-    console.print(f"\nStep: {step}", style="bold red")
-    console.print(f"Result: {result}", style="italic green")
+    console.print(f"\n\nFinal output of the workflow: {completed_steps[-1]}", style="bold blue")
 
-console.print(f"\n\nFinal output of the workflow: {completed_steps[-1]}", style="bold blue")
