@@ -5,8 +5,9 @@ These scripts will help verify that the KnowledgeAugmentedPromptAgent works corr
 and give you a deeper understanding of its behavior and capabilities.
 """
 import os
-from dotenv import load_dotenv
 from rich.console import Console
+from dotenv import load_dotenv
+
 from workflow_agents.base_agents import KnowledgeAugmentedPromptAgent
 
 

@@ -5,8 +5,8 @@ These scripts will help verify that the RoutingAgent and their related agents wo
 and give you a deeper understanding of their behavior and capabilities.
 """
 import os
-from dotenv import load_dotenv
 from rich.console import Console
+from dotenv import load_dotenv
 
 from workflow_agents.base_agents import RoutingAgent, KnowledgeAugmentedPromptAgent
 

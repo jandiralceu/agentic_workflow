@@ -5,8 +5,8 @@ These scripts will help verify that the RAGKnowledgePromptAgent works correctly
 and give you a deeper understanding of its behavior and capabilities.
 """
 import os
-from dotenv import load_dotenv
 from rich.console import Console
+from dotenv import load_dotenv
 
 from workflow_agents.base_agents import RAGKnowledgePromptAgent
 
@@ -58,4 +58,3 @@ response = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(prompt)
 
 console.print(f"\n[bold]Question[/bold]: {prompt}", style="red")
 console.print(f"\n{response}\n", style="cyan")
-
